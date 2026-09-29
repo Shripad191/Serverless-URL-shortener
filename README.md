@@ -26,10 +26,12 @@ Given a long URL, this service generates a short, unique code and redirects anyo
 
 **Proof this architecture is real, not just a diagram:**
 
-**Screenshot:** `docs/screenshots/06-lambda-functions.png`
+<img width="1919" height="903" alt="06-lambda-functions" src="https://github.com/user-attachments/assets/c13d8ec8-fc51-49ef-bb28-3cc4ed29b680" />
+
 *Two separate Lambda functions — `create` and `redirect` — each with their own runtime and permissions, per the single-responsibility design decision below.*
 
-**Screenshot:** `docs/screenshots/07-api-gateway-resources.png`
+<img width="1919" height="908" alt="07-api-gateway-resources" src="https://github.com/user-attachments/assets/e62b127e-0035-4a84-b39f-74e1147e26fe" />
+
 *The actual configured routes: `POST`/`OPTIONS` on `/shorten`, `GET` on `/{shortCode}`.*
 
 ---
@@ -51,7 +53,7 @@ chmod +x deploy.sh
 
 This provisions, in order: a DynamoDB table (provisioned capacity, Free-Tier-safe), an IAM role and least-privilege policy, both Lambda functions, and a complete API Gateway REST API with a `prod` stage — then prints your live API URL.
 
-**Screenshot:** `docs/screenshots/01-deploy-success.png`
+<img width="1475" height="755" alt="01-deploy sh-success" src="https://github.com/user-attachments/assets/3dad65a2-409f-4ab8-98ff-080171355f9d" />
 
 ---
 
@@ -65,7 +67,8 @@ curl -X POST <API_URL>/shorten \
 ```
 Returns a JSON object containing the generated `shortCode`.
 
-**Screenshot:** `docs/screenshots/02-create-shorturl.png`
+<img width="1472" height="755" alt="02-create-shorturl" src="https://github.com/user-attachments/assets/cb2227d5-5a6a-45f6-bea6-0e58b7138b4e" />
+
 
 **Follow the short link** — paste `<API_URL>/<shortCode>` into a browser, or:
 ```bash
@@ -73,7 +76,7 @@ curl -D - -o /dev/null -s <API_URL>/<shortCode>
 ```
 Returns `HTTP/2 302` with a `location` header pointing back to the original URL.
 
-**Screenshot:** `docs/screenshots/03-redirect-success.png`
+<img width="1919" height="966" alt="03-redirect-success" src="https://github.com/user-attachments/assets/e8ab01af-d90a-4f6b-a1c2-3a6a7afedcba" />
 
 **Verify the failure paths** (missing URL, malformed URL, unknown short code):
 ```bash
@@ -82,14 +85,14 @@ curl -X POST <API_URL>/shorten -H "Content-Type: application/json" -d '{"url":"n
 curl -D - -o /dev/null -s <API_URL>/zzzzzz
 ```
 
-**Screenshot:** `docs/screenshots/04-error-handling.png`
+<img width="1481" height="752" alt="04-error-handling" src="https://github.com/user-attachments/assets/7000f3d1-3a93-405a-b42e-b8d2327da77d" />
 
 **Confirm the data landed in DynamoDB:**
 ```bash
 aws dynamodb scan --table-name <your-table-name>
 ```
 
-**Screenshot:** `docs/screenshots/05-dynamodb-table.png`
+<img width="1919" height="905" alt="05-dynamodb-table" src="https://github.com/user-attachments/assets/38502be2-3426-415b-abe5-764292b5f6e8" />
 
 ---
 
