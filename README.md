@@ -106,18 +106,6 @@ Deletes every resource created by `deploy.sh` (API Gateway, both Lambda function
 
 ---
 
-## AWS Free Tier Notes
-
-| Service | Free Tier type | Allowance |
-|---|---|---|
-| **Lambda** | Always Free, forever | 1,000,000 requests + 400,000 GB-seconds/month |
-| **DynamoDB** | Always Free, **but only in `PROVISIONED` mode** | 25 GB storage + 25 RCU + 25 WCU/month |
-| **API Gateway** | 12 Months Free only | 1,000,000 REST API calls/month |
-
-This project deliberately uses DynamoDB in `PROVISIONED` mode (5 RCU / 5 WCU) rather than on-demand billing, since on-demand tables are billed per request from the very first request and are **not** covered by DynamoDB's always-free allowance.
-
----
-
 ## Design Decisions
 
 - **Two separate Lambda functions, not one** — the create and redirect paths have different permissions, triggers, and failure modes; keeping them separate follows the single-responsibility principle and lets each be tuned independently.
